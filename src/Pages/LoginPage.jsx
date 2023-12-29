@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { selectError,selectLoggedInAdmin } from '../Features/Login/authSlice';
 import { checkAdminAsync } from '../Features/Login/authSlice';
 import { useForm } from 'react-hook-form';
+
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const error = useSelector(selectError)
   const admin = useSelector(selectLoggedInAdmin)
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,10 +35,15 @@ export default function LoginPage() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             noValidate
-            onSubmit={handleSubmit((data) => {
-              dispatch(
-                checkAdminAsync({ username: data.email, password: data.password })
-              );
+            onSubmit={handleSubmit(async (data) => {
+              const response = await fetch(`http://localhost:8080/admin/login`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'content-type': 'application/json' },
+              });
+              const res = await response.json();
+              localStorage.setItem("token",res.token);
+              navigate('/admin')
             })}
             className="space-y-6"
             action="#"
@@ -44,20 +51,20 @@ export default function LoginPage() {
           >
             <div>
               <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                htmlFor="username"
+                className="block text-sm font-medium leading-6 text-gray-900 text-left"
               >
-                Email address
+                username
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  {...register('email')}
+                  id="username"
+                  {...register('username')}
                   type="text"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
+                {errors.username && (
+                  <p className="text-red-500">{errors.username.message}</p>
                 )}
               </div>
             </div>

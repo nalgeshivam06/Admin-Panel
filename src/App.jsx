@@ -26,7 +26,6 @@ export default function App() {
     };
   }, []);
 
-  // ******** fetch wishlist ********
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchAllProductsAsync())
@@ -36,7 +35,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="*" element={<div>Page not found</div>}></Route>
-        <Route exact path="/login" element={<LoginPage />}></Route>
+        <Route exact path="/" element={<LoginPage />}></Route>
         <Route exact path="/admin" element={
           <Protected>
             <AdminPanel currentWidth={width} />
