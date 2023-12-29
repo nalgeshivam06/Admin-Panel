@@ -13,7 +13,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -42,6 +41,21 @@ const DimensionInput = ({ label, value, unit, onChange }) => {
         <option value="ft">ft</option>
       </select>
     </div>
+  );
+};
+
+const ColorCheckbox = ({ color, isChecked, onChange }) => {
+  return (
+    <label key={color} className="inline-flex items-center mt-1">
+      <input
+        type="checkbox"
+        value={color}
+        checked={isChecked}
+        onChange={onChange}
+        className="form-checkbox h-5 w-5 text-orange-600"
+      />
+      <span className="ml-1 text-gray-700 mr-4">{color}</span>
+    </label>
   );
 };
 
@@ -90,6 +104,8 @@ function ProductForm() {
 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [availableColors, setAvailableColors] = useState([]);
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
@@ -117,6 +133,38 @@ function ProductForm() {
     }));
   };
 
+  // --
+
+  useEffect(() => {  // Fetch colors based on the selected category
+    if (selectedCategory) {
+      const colorsForCategory = getColorsForCategory(selectedCategory);
+      setAvailableColors(colorsForCategory);
+    } else {
+      setAvailableColors([]);
+    }
+  }, [selectedCategory]);
+
+  const getColorsForCategory = (category) => {
+    switch (category) {
+      case 'Flooring':
+        return ['Oak Brown', 'Maple Red', 'Cherry Blossom', 'Walnut', 'Teak'];
+      case 'Wallpaper':
+        return ['Sky Blue', 'Forest Green', 'Sunset Orange', 'Rose Pink', 'Charcoal Gray'];
+      default:
+        return [];
+    }
+  };
+
+  const handleColorChange = (e) => {
+    const color = e.target.value;
+    if (selectedColors.includes(color)) {
+      setSelectedColors((prevColors) => prevColors.filter((c) => c !== color));
+    } else {
+      setSelectedColors((prevColors) => [...prevColors, color]);
+    }
+  };
+
+  
   return (
     <form
       noValidate
@@ -129,7 +177,7 @@ function ProductForm() {
           patternNumber: data.patternNumber,
           room: data.room,
           collection: data.collection,
-          colour: data.colour,
+          color: selectedColors,
           designStyle: data.designStyle,
           category: selectedCategory,
           subCategory: selectedSubcategory,
@@ -159,39 +207,16 @@ function ProductForm() {
         if (params.id) {
           product.id = params.id;
           dispatch(updateProductAsync(productData));
-          toast.success('Product updated Successfully..!', {
-            position: "bottom-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+          window.alert("Product updated successfully...!")
           reset();
         } else {
           console.log(productData);
           dispatch(createProductAsync(productData));
-          toast.success('Product created!', {
-            position: "bottom-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          window.alert("New Product created successfully...!")
           reset();
         }
-        uploadThumbnail(null);
-        uploadImage1(null);
-        uploadImage2(null);
-        uploadImage3(null);
       })}
     >
-      <ToastContainer />
 
       <div className="space-y-12 bg-white p-6 md:p-12">
         <div className="border-b border-gray-900/10 pb-12">
@@ -301,6 +326,26 @@ function ProductForm() {
               </div>
             )}
           </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+            {selectedCategory && availableColors.length > 0 && (
+              <div className="sm:col-span-3">
+                <label htmlFor="colors">Colors:</label>
+                <div>
+                  {availableColors.map((color) => (
+                    <ColorCheckbox
+                      key={color}
+                      color={color}
+                      isChecked={selectedColors.includes(color)}
+                      onChange={handleColorChange}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
 
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -422,7 +467,7 @@ function ProductForm() {
                 htmlFor="price"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-               Total Price
+                Total Price
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
@@ -443,7 +488,7 @@ function ProductForm() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="sm:col-span-3">
+            <div className="sm:col-span-3">
               <label
                 htmlFor="img1"
                 className="block text-sm font-medium leading-6 text-gray-900 font-bold"
@@ -486,7 +531,7 @@ function ProductForm() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="sm:col-span-3">
+            <div className="sm:col-span-3">
               <label
                 htmlFor="img3"
                 className="block text-sm font-medium leading-6 text-gray-900 font-bold"
