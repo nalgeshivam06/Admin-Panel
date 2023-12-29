@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { selectError,selectLoggedInAdmin } from '../Features/Login/authSlice';
 import { checkAdminAsync } from '../Features/Login/authSlice';
 import { useForm } from 'react-hook-form';
+import { BASE_URL } from '../../config';
 
 
 export default function LoginPage() {
@@ -36,7 +37,7 @@ export default function LoginPage() {
           <form
             noValidate
             onSubmit={handleSubmit(async (data) => {
-              const response = await fetch(`http://localhost:8080/admin/login`, {
+              const response = await fetch(`${BASE_URL}/admin/login`, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: { 'content-type': 'application/json' },
