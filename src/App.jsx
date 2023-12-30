@@ -9,6 +9,7 @@ import AdminProductDetailPage from "./Pages/AdminProductDetailPage";
 import AdminProductFormPage from "./Pages/AdminProductFormPage";
 import AdminOrdersPage from "./Pages/AdminOrdersPage";
 import { fetchAllProductsAsync } from './Features/Product/productSlice';
+import HomePage from './Pages/HomePage';
 
 export default function App() {
 
@@ -39,6 +40,12 @@ export default function App() {
         <Route exact path="/admin" element={
           <Protected>
             <AdminPanel currentWidth={width} />
+          </Protected>
+        }>
+        </Route>
+        <Route exact path="/homePage" element={
+          <Protected>
+            <HomePage currentWidth={width} />
           </Protected>
         }>
         </Route>

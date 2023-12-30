@@ -1,8 +1,5 @@
-import Logo from '../assets/react.svg'
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import Sidebar from './Sidebar';
 
 const AdminNavbar = () => {
     const navigate = useNavigate();
@@ -22,7 +19,7 @@ const AdminNavbar = () => {
                     <NavLink to="/admin">Create Product</NavLink>
                 </div>
                 <div className='mr-2'>
-                    <NavLink to="/admin">Update Home Page</NavLink>
+                    <NavLink to="/homePage">Update Home Page</NavLink>
                 </div>
             </div>
 
