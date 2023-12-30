@@ -26,7 +26,7 @@ const MidInfoSection = () => {
     };
 
     return (
-        <div>
+        <div className='border-t border-red-400 mt-5 py-6'>
             <h1>{staticContent?.title}</h1>
             <h2>{staticContent?.subtitle}</h2>
 
