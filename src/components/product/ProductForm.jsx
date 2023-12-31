@@ -1,26 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  clearSelectedProduct,
-  fetchProductsByIdAsync,
   selectAllCategories,
   selectAllLabels,
-  selectedProduct,
 
   createProductAsync,
   updateProductAsync,
-  deleteProductAsync
-} from '../Features/Product/productSlice';
+} from '../../Features/Product/productSlice';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Typography,
 } from "@material-tailwind/react";
 
 const DimensionInput = ({ label, value, unit, onChange }) => {

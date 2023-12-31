@@ -5,9 +5,6 @@ import {useDispatch,useSelector} from "react-redux"
 import LoginPage from './Pages/LoginPage'
 import Protected from "./Features/Protected";
 import AdminPanel from "./Pages/AdminPanel";
-import AdminProductDetailPage from "./Pages/AdminProductDetailPage";
-import AdminProductFormPage from "./Pages/AdminProductFormPage";
-import AdminOrdersPage from "./Pages/AdminOrdersPage";
 import { fetchAllProductsAsync } from './Features/Product/productSlice';
 import HomePage from './Pages/HomePage';
 
