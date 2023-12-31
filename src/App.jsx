@@ -10,6 +10,7 @@ import ImageChangerForm from './components/homepage/MidInfoSection/ImageChangerF
 import HeaderInfoForm from './components/homepage/HeaderInfoSection/HeaderInfoForm';
 import ImageSectionForm from './components/homepage/ImagesSection/ImageSectionForm';
 import TeamMembersForm from './components/homepage/TeamMembers/TeamMembersForm';
+import SliderForm from './components/homepage/Slider/SliderForm';
 
 export default function App() {
 
@@ -51,6 +52,12 @@ export default function App() {
         }>
         </Route>
         {/* --------- */}
+        <Route exact path='/homePage/create-slider-section' element={
+          <Protected>
+            <SliderForm />
+          </Protected>
+        }></Route>
+
         <Route exact path='/homePage/create-mid-info-section' element={
           <Protected>
             <ImageChangerForm />
