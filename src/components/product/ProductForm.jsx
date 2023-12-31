@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectAllCategories,
-  selectAllLabels,
 
   createProductAsync,
-  updateProductAsync,
 } from '../../Features/Product/productSlice';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -61,8 +58,6 @@ function ProductForm() {
   } = useForm();
 
   // Redux state related
-  const categories = useSelector(selectAllCategories);
-  const labels = useSelector(selectAllLabels);
   const params = useParams();
   const dispatch = useDispatch();
 

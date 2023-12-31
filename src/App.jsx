@@ -1,11 +1,9 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"
 import LoginPage from './Pages/LoginPage'
 import Protected from "./Features/Protected";
 import AdminPanel from "./Pages/AdminPanel";
-import { fetchAllProductsAsync } from './Features/Product/productSlice';
 import HomePage from './Pages/HomePage';
 import AdminProductFormPage from './Pages/AdminProductFormPage';
 
@@ -24,11 +22,6 @@ export default function App() {
       window.removeEventListener("resize", handleSize);
     };
   }, []);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAllProductsAsync())
-  }, [dispatch])
 
   return (
     <>
