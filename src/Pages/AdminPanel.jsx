@@ -1,13 +1,13 @@
 import React from 'react'
 // import AdminProductList from '../components/AdminProductList'
 import AdminNavbar from '../components/AdminNavbar'
-import ProductForm from '../components/product/ProductForm'
+import ProductDisplay from '../components/product/ProductDisplay'
 
 const AdminPanel = ({ currentWidth }) => {
   return (
     <div>
       <AdminNavbar/>
-      <ProductForm/>
+      <ProductDisplay/>
     </div>
   )
 }
