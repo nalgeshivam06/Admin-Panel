@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const Slider = () => {
     const [apiData, setApiData] = useState([]);
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/getImgCircle')
+        fetch(`${BASE_URL}/api/getImgCircle`)
             .then((response) => response.json())
             .then((data) => setApiData(data))
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     const handleDelete = (circleId) => {
-        fetch(`http://localhost:8080/api/deleteSliderCircle/${circleId}`, {
+        fetch(`${BASE_URL}/api/deleteSliderCircle/${circleId}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())

@@ -1,20 +1,21 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const HeaderInfoSection = () => {
     const [apiData, setApiData] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/getHeaderInfoSection')
+        fetch(`${BASE_URL}/api/getHeaderInfoSection`)
             .then((response) => response.json())
             .then((data) => setApiData(data))
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     const handleDelete = (headerId) => {
-        fetch(`http://localhost:8080/api/deleteHeaderInfoSection/${headerId}`, {
+        fetch(`${BASE_URL}/api/deleteHeaderInfoSection/${headerId}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())

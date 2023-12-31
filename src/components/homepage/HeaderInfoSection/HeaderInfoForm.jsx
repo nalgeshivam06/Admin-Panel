@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from '../../AdminNavbar';
+import { BASE_URL } from '../../../../config';
 
 function HeaderInfoForm() {
   const { handleSubmit, control, setValue, getValues } = useForm();
@@ -11,7 +12,7 @@ function HeaderInfoForm() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await fetch('http://localhost:8080/api/createHeaderInfoSection', {
+      const response = await fetch(`${BASE_URL}/api/createHeaderInfoSection1`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

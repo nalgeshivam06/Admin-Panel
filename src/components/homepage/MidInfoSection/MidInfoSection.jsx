@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const MidInfoSection = () => {
     const [apiData, setApiData] = useState([]);
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/getMidInfoSection')
+        fetch(`${BASE_URL}/api/getMidInfoSection`)
             .then((response) => response.json())
             .then((data) => setApiData(data))
             .catch((error) => console.error('Error fetching data:', error));
@@ -18,7 +19,7 @@ const MidInfoSection = () => {
 
 
     const handleDelete = (midInfoId) => {
-        fetch(`http://localhost:8080/api/deleteMidSection/${midInfoId}`, {
+        fetch(`${BASE_URL}/api/deleteMidSection/${midInfoId}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())

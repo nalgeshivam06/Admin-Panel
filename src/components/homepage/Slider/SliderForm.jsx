@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import AdminNavbar from '../../AdminNavbar';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 function SliderForm() {
     const { handleSubmit, control } = useForm();
@@ -10,7 +11,7 @@ function SliderForm() {
     const onSubmit = async (data) => {
         try {
             console.log(data);
-            const response = await fetch('http://localhost:8080/api/createImgCricle', {
+            const response = await fetch(`${BASE_URL}/api/createImgCricle`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

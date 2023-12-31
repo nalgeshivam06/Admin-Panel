@@ -18,7 +18,6 @@ function Protected({ children }) {
         },
       });
       const data = await response.json();
-      console.log(data);
       setAdmin(data.isAdmin);
     } catch (error) {
       console.log(error);

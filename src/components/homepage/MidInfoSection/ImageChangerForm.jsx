@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import AdminNavbar from '../../AdminNavbar';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const SectionInput = ({ index, control }) => {
   return (
@@ -68,7 +69,7 @@ function ImageChangerForm() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await fetch('http://localhost:8080/api/createMidInfoSection', {
+      const response = await fetch(`${BASE_URL}/api/createMidInfoSection`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

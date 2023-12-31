@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const ImagesSection = () => {
     const [galleryData, setGalleryData] = useState([]);
@@ -7,14 +8,14 @@ const ImagesSection = () => {
 
     useEffect(() => {
         // Fetch data from your API endpoint
-        fetch('http://localhost:8080/api/getImgSection')
+        fetch(`${BASE_URL}/api/getImgSection`)
             .then((response) => response.json())
             .then((data) => setGalleryData(data))
             .catch((error) => console.error('Error fetching images data:', error));
     }, []);
 
     const handleDelete = (imgId) => {
-        fetch(`http://localhost:8080/api/deleteImgSection/${imgId}`, {
+        fetch(`${BASE_URL}/api/deleteImgSection/${imgId}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())

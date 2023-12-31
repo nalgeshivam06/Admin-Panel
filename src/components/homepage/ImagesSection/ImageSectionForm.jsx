@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import AdminNavbar from '../../AdminNavbar';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 function ImageSectionForm() {
     const { handleSubmit, control } = useForm();
@@ -10,7 +11,7 @@ function ImageSectionForm() {
     const onSubmit = async (data) => {
         console.log(data);
         try {
-          const response = await fetch('http://localhost:8080/api/createImgSection', {
+          const response = await fetch(`${BASE_URL}/api/createImgSection`, {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'

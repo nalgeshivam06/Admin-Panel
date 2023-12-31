@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../../../config';
 
 const TeamMembers = () => {
     const [teamData, setTeamData] = useState([]);
@@ -7,14 +8,14 @@ const TeamMembers = () => {
 
     useEffect(() => {
         // Fetch data from your API endpoint
-        fetch('http://localhost:8080/api/profileContent')
+        fetch(`${BASE_URL}/api/profileContent`)
             .then((response) => response.json())
             .then((data) => setTeamData(data))
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     const handleDelete = (profileId) => {
-        fetch(`http://localhost:8080/api/profileContent/${profileId}`, {
+        fetch(`${BASE_URL}/api/profileContent/${profileId}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())
