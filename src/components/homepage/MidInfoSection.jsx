@@ -14,7 +14,6 @@ const MidInfoSection = () => {
         return <p>No midinfo section available</p>;
     }
 
-    const { staticContent, sections } = apiData[0];
 
     const handleDelete = (midInfoId) => {
         fetch(`http://localhost:8080/api/deleteMidSection/${midInfoId}`, {
@@ -26,25 +25,33 @@ const MidInfoSection = () => {
     };
 
     return (
-        <div className='border-t border-red-400 mt-5 py-6'>
-            <h1>{staticContent?.title}</h1>
-            <h2>{staticContent?.subtitle}</h2>
-
-            {sections?.map((section) => (
-                <div key={section._id} style={{ margin: '20px 0' }}>
-                    <h3>{section.heading}</h3>
-                    <p>{section.text}</p>
-                    <img src={section.imageUrl} alt={section.heading} style={{ maxWidth: '100%', height: 'auto' }} />
-                </div>
-            ))}
-
-            <button
-                type="button"
-                className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1"
-                onClick={() => handleDelete(apiData[0]._id)}
-            >
-                Delete
-            </button>
+        <div className='border-t border-red-400 mt-5 py-6 mx-6'>
+            <div className="flex gap-x-6">
+                {apiData && apiData.map((item) => (
+                    <div key={item._id} className="sample-card border rounded p-4">
+                        <h2 className='font-bold'>{item.staticContent.title}</h2>
+                        <h3>{item.staticContent.subtitle}</h3>
+                        <div className="section-container flex">
+                            {item.sections.map((section) => (
+                                <div key={section._id} className="section border-r px-2">
+                                    <img src={section.imageUrl} alt={section.heading} className='w-[100px] h-[100px] my-4' />
+                                    <div className="section-details">
+                                        <h4 className='font-bold'>{section.heading}</h4>
+                                        <p>{section.text}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            type="button"
+                            className="text-white mt-4 text-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1"
+                            onClick={() => handleDelete(item._id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

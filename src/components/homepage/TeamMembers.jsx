@@ -23,13 +23,13 @@ const TeamMembers = () => {
     return (
         <div className='mt-4 border-t border-red-400 py-4'>
             <h2 className='py-4 text-center font-bold'>Team Members</h2>
-            <div className='mx-4 flex mx-4 gap-x-6'>
+            <div className='mx-4 flex mx-4 gap-x-4'>
                 {teamData && teamData.map((member) => (
-                    <div key={member._id} style={{ marginBottom: '20px' }} className='flex flex-col mt-4'>
+                    <div key={member._id} style={{ marginBottom: '20px' }} className='flex flex-col mt-4  border p-2'>
                         <img
                             src={member.image}
                             alt={`${member.name}'s Image`}
-                            style={{ maxWidth: '100%', height: 'auto', borderRadius: '50%' }}
+                            style={{ width:"50px",height:"50px",borderRadius: '50%' }}
                         />
                         <h3>{member.name}</h3>
                         <p>{member.role}</p>
