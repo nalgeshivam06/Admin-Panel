@@ -7,6 +7,8 @@ import AdminPanel from "./Pages/AdminPanel";
 import HomePage from './Pages/HomePage';
 import AdminProductFormPage from './Pages/AdminProductFormPage';
 import ImageChangerForm from './components/homepage/MidInfoSection/ImageChangerForm';
+import HeaderInfoForm from './components/homepage/HeaderInfoSection/HeaderInfoForm';
+import ImageSectionForm from './components/homepage/ImagesSection/ImageSectionForm';
 
 export default function App() {
 
@@ -47,11 +49,26 @@ export default function App() {
           </Protected>
         }>
         </Route>
+        {/* --------- */}
         <Route exact path='/homePage/create-mid-info-section' element={
           <Protected>
             <ImageChangerForm />
           </Protected>
         }></Route>
+
+        <Route exact path='/homePage/create-header-info-section' element={
+          <Protected>
+            <HeaderInfoForm />
+          </Protected>
+        }></Route>
+
+        <Route exact path='/homePage/create-image-section' element={
+          <Protected>
+            <ImageSectionForm />
+          </Protected>
+        }></Route>
+        
+
       </Routes>
     </>
   )
