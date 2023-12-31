@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TeamMembers = () => {
     const [teamData, setTeamData] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(() => {
         // Fetch data from your API endpoint
@@ -22,14 +24,17 @@ const TeamMembers = () => {
 
     return (
         <div className='mt-4 border-t border-red-400 py-4'>
-            <h2 className='py-4 text-center font-bold'>Team Members</h2>
+            <div className='text-center mb-6'>
+                <h1 className='font-bold '>Team Memebers</h1>
+                <span className='text-red-400  mt-1 hover:cursor-pointer' onClick={() => navigate('/homePage/create-team-members-section')}>Create New</span>
+            </div>
             <div className='mx-4 flex mx-4 gap-x-4'>
                 {teamData && teamData.map((member) => (
                     <div key={member._id} style={{ marginBottom: '20px' }} className='flex flex-col mt-4  border p-2'>
                         <img
                             src={member.image}
                             alt={`${member.name}'s Image`}
-                            style={{ width:"50px",height:"50px",borderRadius: '50%' }}
+                            style={{ width: "50px", height: "50px", borderRadius: '50%' }}
                         />
                         <h3>{member.name}</h3>
                         <p>{member.role}</p>

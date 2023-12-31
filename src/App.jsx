@@ -9,6 +9,7 @@ import AdminProductFormPage from './Pages/AdminProductFormPage';
 import ImageChangerForm from './components/homepage/MidInfoSection/ImageChangerForm';
 import HeaderInfoForm from './components/homepage/HeaderInfoSection/HeaderInfoForm';
 import ImageSectionForm from './components/homepage/ImagesSection/ImageSectionForm';
+import TeamMembersForm from './components/homepage/TeamMembers/TeamMembersForm';
 
 export default function App() {
 
@@ -67,7 +68,13 @@ export default function App() {
             <ImageSectionForm />
           </Protected>
         }></Route>
-        
+
+        <Route exact path='/homePage/create-team-members-section' element={
+          <Protected>
+            <TeamMembersForm />
+          </Protected>
+        }></Route>
+
 
       </Routes>
     </>
