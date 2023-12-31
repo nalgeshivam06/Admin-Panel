@@ -6,6 +6,7 @@ import Protected from "./Features/Protected";
 import AdminPanel from "./Pages/AdminPanel";
 import HomePage from './Pages/HomePage';
 import AdminProductFormPage from './Pages/AdminProductFormPage';
+import ImageChangerForm from './components/homepage/MidInfoSection/ImageChangerForm';
 
 export default function App() {
 
@@ -46,6 +47,11 @@ export default function App() {
           </Protected>
         }>
         </Route>
+        <Route exact path='/homePage/create-mid-info-section' element={
+          <Protected>
+            <ImageChangerForm />
+          </Protected>
+        }></Route>
       </Routes>
     </>
   )

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MidInfoSection = () => {
     const [apiData, setApiData] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetch('http://localhost:8080/api/getMidInfoSection')
@@ -26,6 +28,10 @@ const MidInfoSection = () => {
 
     return (
         <div className='border-t border-red-400 mt-5 py-6 mx-6'>
+            <div className='text-center mb-6'> 
+                <h1 className='font-bold'>Mid Info Section (Image Changer)</h1>
+                <span className='text-green-400 mt-1 hover:cursor-pointer' onClick={()=>navigate('/homePage/create-mid-info-section')}>Create New</span>
+            </div>
             <div className="flex gap-x-6">
                 {apiData && apiData.map((item) => (
                     <div key={item._id} className="sample-card border rounded p-4">
