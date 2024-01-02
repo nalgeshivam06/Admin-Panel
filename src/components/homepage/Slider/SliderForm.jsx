@@ -141,6 +141,22 @@ function SliderForm() {
                                                 />
                                             )}
                                         />
+
+                                        <label htmlFor={`circles[${index}].productLink`} className="block text-sm font-medium leading-5 text-gray-700 mt-4">
+                                            Circle {index + 1} Product Link
+                                        </label>
+                                        <Controller
+                                            name={`circles[${index}].productLink`}
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => (
+                                                <input
+                                                    {...field}
+                                                    type="text"
+                                                    className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                                                />
+                                            )}
+                                        />
                                     </div>
                                 ))}
                                 <button type="button" onClick={() => field.onChange([...field.value, {}])} className="text-indigo-600 hover:text-indigo-900 mt-4">

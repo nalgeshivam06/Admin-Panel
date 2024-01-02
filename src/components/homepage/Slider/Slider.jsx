@@ -9,7 +9,7 @@ const Slider = () => {
     useEffect(() => {
         fetch(`${BASE_URL}/api/getImgCircle`)
             .then((response) => response.json())
-            .then((data) => setApiData(data))
+            .then((data) => setApiData(data.result))
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
@@ -18,7 +18,7 @@ const Slider = () => {
             method: 'DELETE',
         })
             .then((response) => response.json())
-            .then((data) => setApiData(data))
+            .then((data) => setApiData(data.result))
             .catch((error) => console.error('Error deleting data:', error));
     };
     return (
