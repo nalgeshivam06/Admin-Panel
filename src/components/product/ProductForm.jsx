@@ -1,14 +1,11 @@
 import { useDispatch } from 'react-redux';
-import {
-
-  createProductAsync,
-} from '../../Features/Product/productSlice';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
   Button,
 } from "@material-tailwind/react";
+import { BASE_URL } from '../../../config';
 
 const DimensionInput = ({ label, value, unit, onChange }) => {
   return (
@@ -166,38 +163,30 @@ function ProductForm() {
 
       // submit method of the form 💥
       onSubmit={handleSubmit(async (data) => {
+
         const formData = new FormData();
 
-        const productData = {
-          title: data.title,
-          patternNumber: data.patternNumber,
-          room: data.room,
-          collection: data.collection,
-          color: selectedColors,
-          designStyle: data.designStyle,
-          category: selectedCategory,
-          subCategory: selectedSubcategory,
-          units: data.units,
-          unitType: data.unitType,
-          totalPricePerUnit: data.totalPricePerUnit,
-          perUnitType: data.perUnitType,
-          perUnitPrice: parseFloat(data.perUnitPrice),
-          dimensions: {
-            length: {
-              value: parseFloat(dimensions.length.value),
-              unit: dimensions.length.unit,
-            },
-            width: {
-              value: parseFloat(dimensions.width.value),
-              unit: dimensions.width.unit,
-            },
-            thickness: {
-              value: parseFloat(dimensions.thickness.value),
-              unit: dimensions.thickness.unit,
-            },
-          },
-          images: [data.img1, data.img2, data.img3, data.img4].filter(url => url),
-        };
+        // normal text data
+        formData.append('title', data.title);
+        formData.append('patternNumber', data.patternNumber);
+        formData.append('room', data.room);
+        formData.append('designStyle', data.designStyle);
+        formData.append('category', selectedCategory);
+        formData.append('subCategory', selectedSubcategory);
+        formData.append('collection', data.collection);
+        formData.append('color', selectedColors);
+        formData.append('units', data.units);
+        formData.append('unitType', data.unitType);
+        formData.append('totalPricePerUnit', data.totalPricePerUnit);
+        formData.append('perUnitType', data.perUnitType);
+        formData.append('perUnitPrice', parseFloat(data.perUnitPrice));
+        // Convert dimensions to FormData
+        formData.append('dimensions[length][value]', parseFloat(dimensions.length.value));
+        formData.append('dimensions[length][unit]', dimensions.length.unit);
+        formData.append('dimensions[width][value]', parseFloat(dimensions.width.value));
+        formData.append('dimensions[width][unit]', dimensions.width.unit)
+        formData.append('dimensions[thickness][value]', parseFloat(dimensions.thickness.value));
+        formData.append('dimensions[thickness][unit]', dimensions.thickness.unit)
         // Add images to FormData
         for (let i = 1; i <= 4; i++) {
           const fileInput = document.getElementById(`img${i}`);
@@ -207,33 +196,25 @@ function ProductForm() {
           }
         }
 
-        if (params.id) {
-          product.id = params.id;
-          dispatch(updateProductAsync(productData));
-          window.alert("Product updated successfully...!")
-          reset();
-        } else {
-          console.log(productData);
-          try {
-            const response = await fetch('http://localhost:8080/api/upload', {
-              method:"POST",
-              headers: {
-                // 'Content-Type': 'multipart/form-data',
-              },
-              body:formData
-            });
-        
-            // Handle the response, update state, etc.
-            console.log(response.data);
-          } catch (error) {
-            console.error('Error uploading images:', error);
-          }
-          dispatch(createProductAsync(productData));
-          window.alert("New Product created successfully...!")
-          reset();
+        // --------- api call -------
+        try {
+          const response = await fetch(`${BASE_URL}/api/createProduct`, {
+            method: "POST",
+            headers: {
+              // 'Content-Type': 'multipart/form-data',
+            },
+            body: formData
+          });
+          const responseData = await response.json();
+          window.alert(responseData.message)
+        } catch (error) {
+          console.error('Error uploading images:', error);
         }
+
+        reset();
       })}
     >
+{/* ➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡ ➡➡➡➡➡➡➡➡*/}
 
       <div className="space-y-12 bg-white p-6 md:p-12">
         <div className="border-b border-gray-900/10 pb-12">
@@ -495,7 +476,6 @@ function ProductForm() {
                       min: 1,
                       max: 10000,
                     })}
-                    // onChange={(e) => setOldtotalPricePerUnit(e.target.value)}
                     id="totalPricePerUnit"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
@@ -510,7 +490,7 @@ function ProductForm() {
                 htmlFor="img1"
                 className="block text-sm font-medium leading-6 text-gray-900 font-bold"
               >
-                Image1*
+                Image1* (Thumbnail)
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
@@ -612,47 +592,11 @@ function ProductForm() {
 
         <Button
           type="submit"
-          // className="rounded-md shadow-2xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-          className='bg-orange-600'
+          className="rounded-md shadow-2xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
         >
           Add product
         </Button>
       </div>
-
-      {/* ---------------------------- delete model ----------------------------- */}
-      {/* <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>
-          <Typography variant="h5" color="blue-gray">
-            Your Attention is Required!
-          </Typography>
-        </DialogHeader>
-        <DialogBody divider className="grid place-items-center gap-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-16 w-16 text-red-500"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.25 9a6.75 6.75 0 0113.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 01-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 11-7.48 0 24.585 24.585 0 01-4.831-1.244.75.75 0 01-.298-1.205A8.217 8.217 0 005.25 9.75V9zm4.502 8.9a2.25 2.25 0 104.496 0 25.057 25.057 0 01-4.496 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <Typography color="red" variant="paragraph">
-            Are you sure! You want to delete this product?
-          </Typography>
-        </DialogBody>
-        <DialogFooter className="space-x-2">
-          <Button variant="text" color="blue-gray" onClick={handleOpen}>
-            close
-          </Button>
-          <Button variant="gradient" color='red' onClick={handleDelete}>
-            Yes! Sure
-          </Button>
-        </DialogFooter>
-      </Dialog> */}
-
 
     </form>
   );
