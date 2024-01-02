@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
 
   createProductAsync,
@@ -91,6 +91,7 @@ function ProductForm() {
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [selectedColors, setSelectedColors] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
+  const [images, setImages] = useState([]);
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
@@ -149,13 +150,23 @@ function ProductForm() {
     }
   };
 
-  
+  const handleImageChange = (e, index) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      // Set the imageUrl in your component state or dispatch an action
+      setImages(`img${index}`, imageUrl);
+    }
+  };
+
+
   return (
     <form
       noValidate
 
       // submit method of the form 💥
       onSubmit={handleSubmit(async (data) => {
+        const formData = new FormData();
 
         const productData = {
           title: data.title,
@@ -187,7 +198,14 @@ function ProductForm() {
           },
           images: [data.img1, data.img2, data.img3, data.img4].filter(url => url),
         };
-
+        // Add images to FormData
+        for (let i = 1; i <= 4; i++) {
+          const fileInput = document.getElementById(`img${i}`);
+          const file = fileInput?.files[0];
+          if (file) {
+            formData.append(`image`, file);
+          }
+        }
 
         if (params.id) {
           product.id = params.id;
@@ -196,6 +214,20 @@ function ProductForm() {
           reset();
         } else {
           console.log(productData);
+          try {
+            const response = await fetch('http://localhost:8080/api/upload', {
+              method:"POST",
+              headers: {
+                // 'Content-Type': 'multipart/form-data',
+              },
+              body:formData
+            });
+        
+            // Handle the response, update state, etc.
+            console.log(response.data);
+          } catch (error) {
+            console.error('Error uploading images:', error);
+          }
           dispatch(createProductAsync(productData));
           window.alert("New Product created successfully...!")
           reset();
@@ -483,12 +515,14 @@ function ProductForm() {
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                   <input
-                    type="text"
+                    type="file"
                     {...register('img1', {
                       required: 'name is required',
                     })}
                     id="img1"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 1)}
                   />
                 </div>
               </div>
@@ -503,12 +537,14 @@ function ProductForm() {
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                   <input
-                    type="text"
+                    type="file"
                     {...register('img2', {
                       required: 'name is required',
                     })}
                     id="img2"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 2)}
                   />
                 </div>
               </div>
@@ -526,12 +562,14 @@ function ProductForm() {
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                   <input
-                    type="text"
+                    type="file"
                     {...register('img3', {
                       required: 'name is required',
                     })}
                     id="img3"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 3)}
                   />
                 </div>
               </div>
@@ -546,12 +584,14 @@ function ProductForm() {
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                   <input
-                    type="text"
+                    type="file"
                     {...register('img4', {
                       required: 'name is required',
                     })}
                     id="img4"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 4)}
                   />
                 </div>
               </div>
