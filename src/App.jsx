@@ -11,6 +11,7 @@ import HeaderInfoForm from './components/homepage/HeaderInfoSection/HeaderInfoFo
 import ImageSectionForm from './components/homepage/ImagesSection/ImageSectionForm';
 import TeamMembersForm from './components/homepage/TeamMembers/TeamMembersForm';
 import SliderForm from './components/homepage/Slider/SliderForm';
+import ImgGridForm from './components/homepage/ImgGrid/ImgGridForm';
 
 export default function App() {
 
@@ -79,6 +80,12 @@ export default function App() {
         <Route exact path='/homePage/create-team-members-section' element={
           <Protected>
             <TeamMembersForm />
+          </Protected>
+        }></Route>
+
+        <Route exact path='/homePage/create-imgGrid-section' element={
+          <Protected>
+            <ImgGridForm />
           </Protected>
         }></Route>
 
