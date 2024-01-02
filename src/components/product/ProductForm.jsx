@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
@@ -15,7 +15,7 @@ const DimensionInput = ({ label, value, unit, onChange }) => {
         type="number"
         value={value}
         onChange={(e) => onChange({ value: e.target.value, unit })}
-        className='ml-2 border p-2'
+        className='ml-2 border bg-transparent p-2 border-gray-400 rounded'
       />
       <select value={unit} onChange={(e) => onChange({ value, unit: e.target.value })}>
         <option value="mm">mm</option>
@@ -43,20 +43,32 @@ const ColorCheckbox = ({ color, isChecked, onChange }) => {
   );
 };
 
+const PurchaseModeCheckBox = ({ purchaseMode, isChecked, onChange }) => {
+  return (
+    <label key={purchaseMode} className="inline-flex items-center mt-1">
+      <input
+        type="checkbox"
+        value={purchaseMode}
+        checked={isChecked}
+        onChange={onChange}
+        className="form-checkbox h-5 w-5 text-orange-600"
+      />
+      <span className="ml-1 text-gray-700 mr-4">{purchaseMode}</span>
+    </label>
+  );
+};
+
 function ProductForm() {
 
   // form related 
   const {
     register,
     handleSubmit,
-    setValue,
+    getValues,
     reset,
+    control,
     formState: { errors },
   } = useForm();
-
-  // Redux state related
-  const params = useParams();
-  const dispatch = useDispatch();
 
   // -------------------------------------------------
 
@@ -82,6 +94,8 @@ function ProductForm() {
     ]
   };
 
+  const availablePurchaseMode = ['Only Online', 'Buy online with in-store request', 'In-store request Only']
+
   // --
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -89,6 +103,8 @@ function ProductForm() {
   const [selectedColors, setSelectedColors] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [images, setImages] = useState([]);
+  const [selectedPurchaseMode, setSelectedPurchaseMode] = useState([]);
+  // const [pdf, setPdf] = useState('');
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
@@ -151,11 +167,27 @@ function ProductForm() {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      // Set the imageUrl in your component state or dispatch an action
       setImages(`img${index}`, imageUrl);
     }
   };
 
+  const handlePurchaseModeChange = (e) => {
+    const purchaseMode = e.target.value;
+    if (selectedPurchaseMode.includes(purchaseMode)) {
+      setSelectedPurchaseMode((prevMode) => prevMode.filter((c) => c !== purchaseMode));
+    } else {
+      setSelectedPurchaseMode((prevMode) => [...prevMode, purchaseMode]);
+    }
+  };
+
+  // const handlePDFchange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const pdfUrl = URL.createObjectURL(file);
+  //     setPdf(pdfUrl);
+  //   }
+  // };
+  
 
   return (
     <form
@@ -165,6 +197,9 @@ function ProductForm() {
       onSubmit={handleSubmit(async (data) => {
 
         const formData = new FormData();
+
+        const coreValuesData = getValues('coreValues');
+        const featuresData = getValues('features');
 
         // normal text data
         formData.append('title', data.title);
@@ -195,8 +230,27 @@ function ProductForm() {
             formData.append(`image`, file);
           }
         }
+       
 
-        // --------- api call -------
+        formData.append('purchaseMode', selectedPurchaseMode);
+        formData.append('productDescription', data.productDescription);
+
+        coreValuesData.forEach((coreValue, index) => {
+          formData.append(`coreValues[${index}][heading]`, coreValue?.heading || '');
+          formData.append(`coreValues[${index}][text]`, coreValue?.text || '');
+        });
+
+        featuresData.forEach((feature, index) => {
+          formData.append(`features[${index}][feature]`, feature?.feature || '');
+        });
+
+         // add PDF to FormData
+        //  formData.append('pdf', data.pdf[0]);
+
+         formData.append('maintainanceDetails',data.maintainanceDetails);
+
+
+        // --------- 💥 api call 💥 -------
         try {
           const response = await fetch(`${BASE_URL}/api/createProduct`, {
             method: "POST",
@@ -212,17 +266,23 @@ function ProductForm() {
         }
 
         reset();
+        setSelectedColors([])
+        setSelectedPurchaseMode([])
       })}
     >
-{/* ➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡ ➡➡➡➡➡➡➡➡*/}
+      {/* ➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡➡ ➡➡➡➡➡➡➡➡*/}
 
       <div className="space-y-12 bg-white p-6 md:p-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Add a Product
+        <div className="border-b border-gray-500 pb-12">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 text-center">
+            Add New Product
           </h2>
 
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+          <h2 className="text-lg mt-6 font-bold leading-7 text-gray-900">
+            General Information:
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
               <label
                 htmlFor="title"
@@ -238,7 +298,7 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="title"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -249,7 +309,7 @@ function ProductForm() {
                 htmlFor="patternNumber"
                 className="block text-sm font-medium leading-6 text-gray-900 font-bold"
               >
-                pattern Number*
+                Pattern Number*
               </label>
               <div className="mt-2">
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
@@ -259,7 +319,7 @@ function ProductForm() {
                       required: 'patternNumber is required',
                     })}
                     id="patternNumber"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -271,7 +331,7 @@ function ProductForm() {
               <label htmlFor="room" className="block text-sm font-medium leading-6 text-gray-900">
                 Room
               </label>
-              <select {...register('room')} id="room" className="block w-full mt-1 border-0 bg-transparent">
+              <select {...register('room')} id="room" className="block w-full mt-1 border bg-transparent p-2 border-gray-400 rounded">
                 <option value="">-- Select Room --</option>
                 {roomOptions.map((room, index) => (
                   <option key={index} value={room}>{room}</option>
@@ -294,7 +354,7 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="collection"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -304,7 +364,7 @@ function ProductForm() {
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3 my-6">
               <label htmlFor="category">Category:</label>
-              <select id="category" className='ml-2 border p-1' onChange={handleCategoryChange} value={selectedCategory}>
+              <select id="category" className='ml-2 border bg-transparent p-2 border-gray-400 rounded' onChange={handleCategoryChange} value={selectedCategory}>
                 <option value="">-- Select Category --</option>
                 {Object.keys(categoryOptions).map((category, index) => (
                   <option key={index} value={category}>{category}</option>
@@ -312,17 +372,19 @@ function ProductForm() {
               </select>
             </div>
 
-            {selectedCategory && (
-              <div className="sm:col-span-3">
-                <label htmlFor="subcategory">Subcategory:</label>
-                <select id="subcategory" className='ml-2 p-1 border' onChange={handleSubcategoryChange} value={selectedSubcategory}>
-                  <option value="">-- Select Subcategory --</option>
-                  {categoryOptions[selectedCategory].map((subcategory, index) => (
-                    <option key={index} value={subcategory}>{subcategory}</option>
-                  ))}
-                </select>
-              </div>
-            )}
+            <div className="sm:col-span-3">
+              {selectedCategory && (
+                <>
+                  <label htmlFor="subcategory">Subcategory:</label>
+                  <select id="subcategory" className='ml-2 border bg-transparent p-2 border-gray-400 rounded' onChange={handleSubcategoryChange} value={selectedSubcategory}>
+                    <option value="">-- Select Subcategory --</option>
+                    {categoryOptions[selectedCategory].map((subcategory, index) => (
+                      <option key={index} value={subcategory}>{subcategory}</option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -382,7 +444,7 @@ function ProductForm() {
                 {...register('unitType', {
                   required: 'Unit Type is required',
                 })}
-                className="ml-2 p-1 border"
+                className="ml-2 border bg-transparent p-2 border-gray-400 rounded"
               >
                 <option value="">--Select Unit Type--</option>
                 {['sqft', 'box', 'pcs', 'mtr'].map((type, index) => (
@@ -402,7 +464,7 @@ function ProductForm() {
                   required: 'Units are required',
                   min: 1,
                 })}
-                className="ml-2 p-1 border"
+                className="ml-2 border bg-transparent p-2 border-gray-400 rounded"
               />
             </div>
           </div>
@@ -415,7 +477,7 @@ function ProductForm() {
                 {...register('perUnitType', {
                   required: 'Per Unit Type is required',
                 })}
-                className="ml-2 p-1 border"
+                className="ml-2 border bg-transparent p-2 border-gray-400 rounded"
               >
                 <option value="">--Select Per Unit Type--</option>
                 {['sqft', 'box', 'pcs', 'mtr'].map((type, index) => (
@@ -435,7 +497,7 @@ function ProductForm() {
                   required: 'Per Unit Price is required',
                   min: 0,
                 })}
-                className="ml-2 p-1 border"
+                className="ml-2 border bg-transparent p-2 border-gray-400 rounded"
               />
             </div>
           </div>
@@ -455,7 +517,7 @@ function ProductForm() {
                       required: 'designStyle is required',
                     })}
                     id="designStyle"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -477,7 +539,7 @@ function ProductForm() {
                       max: 10000,
                     })}
                     id="totalPricePerUnit"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -500,7 +562,7 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="img1"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     accept="image/*"
                     onChange={(e) => handleImageChange(e, 1)}
                   />
@@ -522,7 +584,7 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="img2"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     accept="image/*"
                     onChange={(e) => handleImageChange(e, 2)}
                   />
@@ -547,7 +609,7 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="img3"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     accept="image/*"
                     onChange={(e) => handleImageChange(e, 3)}
                   />
@@ -569,13 +631,224 @@ function ProductForm() {
                       required: 'name is required',
                     })}
                     id="img4"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     accept="image/*"
                     onChange={(e) => handleImageChange(e, 4)}
                   />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* 💢💢💢💢💢 purchase mode 💢💢💢💢💢💢💢 */}
+
+        <div className="border-b border-gray-500 pb-12">
+          <h2 className="text-lg mt-6 font-bold leading-7 text-gray-900">
+            Product Purchase Mode:
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="sm:col-span-2">
+              <label htmlFor="purchaseMode">Purchase Mode:</label>
+              <div>
+                {availablePurchaseMode.map((pMode) => (
+                  <PurchaseModeCheckBox
+                    key={pMode}
+                    purchaseMode={pMode}
+                    isChecked={selectedPurchaseMode.includes(pMode)}
+                    onChange={handlePurchaseModeChange}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 💢💢💢💢💢 product detail 💢💢💢💢💢💢💢 */}
+
+        <div className="border-b border-gray-500 pb-12">
+          <h2 className="text-lg mt-6 font-bold leading-7 text-gray-900">
+            Product Details:
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="productDescription"
+                className="block text-sm font-medium leading-6 text-gray-900 font-bold"
+              >
+                Product Description*
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
+                  <textarea
+                    type="text"
+                    {...register('productDescription', {
+                      required: 'Description is required',
+                    })}
+                    id="productDescription"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <label className="block text-lg font-medium leading-5 text-gray-700 mt-4">Core Values:</label>
+            <Controller
+              name={`coreValues`}
+              control={control}
+              defaultValue={[{ heading: '', text: '' }]}
+              render={({ field }) => (
+                <div>
+                  {field.value.map((coreValue, index) => (
+                    <div key={index} className="mt-4">
+                      <label htmlFor={`coreValues[${index}].heading`} className="block text-sm font-medium leading-5 text-gray-700">
+                        Core value {index + 1} - Heading
+                      </label>
+                      <Controller
+                        name={`coreValues[${index}].heading`}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="text"
+                            className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                          />
+                        )}
+                      />
+
+                      <label htmlFor={`coreValues[${index}].text`} className="block text-sm font-medium leading-5 text-gray-700 mt-4">
+                        Core value {index + 1} - Text
+                      </label>
+                      <Controller
+                        name={`coreValues[${index}].text`}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="text"
+                            className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                          />
+                        )}
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newCoreValues = [...field.value, { heading: '', text: '' }];
+                      field.onChange(newCoreValues);
+                    }}
+                    className="text-indigo-600 hover:text-indigo-900 mt-4"
+                  >
+                    Add Core Value
+                  </button>
+
+                </div>
+              )}
+            />
+
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <label className="block text-lg font-medium leading-5 text-gray-700 mt-4">Product Features:</label>
+            <Controller
+              name={`features`}
+              control={control}
+              defaultValue={[{ feature: '' }]}
+              render={({ field }) => (
+                <div>
+                  {field.value.map((feature, index) => (
+                    <div key={index} className="mt-4">
+                      <label htmlFor={`features[${index}].feature`} className="block text-sm font-medium leading-5 text-gray-700">
+                        Feature {index + 1}
+                      </label>
+                      <Controller
+                        name={`features[${index}].feature`}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="text"
+                            className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                          />
+                        )}
+                      />
+
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newFeature = [...field.value, { feature: '' }];
+                      field.onChange(newFeature);
+                    }}
+                    className="text-indigo-600 hover:text-indigo-900 mt-4"
+                  >
+                    Add Feature
+                  </button>
+
+                </div>
+              )}
+            />
+
+          </div>
+        </div>
+
+        {/* 💢💢💢💢💢 Product Maintance 💢💢💢💢💢💢💢 */}
+
+        <div className="pb-12">
+          <h2 className="text-lg mt-6 font-bold leading-7 text-gray-900">
+            Product Maintainance:
+          </h2>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="maintainanceDetails"
+                className="block text-sm font-medium leading-6 text-gray-900 font-bold"
+              >
+                Product Maintainance Details*
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
+                  <textarea
+                    type="text"
+                    {...register('maintainanceDetails', {
+                      required: 'maintainance Description is required',
+                    })}
+                    id="maintainanceDetails"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* <div className="sm:col-span-3">
+              <label
+                htmlFor="pdf"
+                className="block text-sm font-medium leading-6 text-gray-900 font-bold"
+              >
+                Product Description PDF
+              </label>
+              <div className="mt-2">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
+                  <input
+                    type="file"
+                    {...register('pdf')}
+                    id="pdf"
+                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    accept="application/pdf"
+                    onChange={(e) => handlePDFchange(e)}
+                  />
+                </div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
