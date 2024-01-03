@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { selectLoggedInAdmin } from "./Login/authSlice";
 import { useEffect, useState } from "react";
+import { BASE_URL } from "../../config";
 
 function Protected({ children }) {
   const [admin, setAdmin] = useState(null);
@@ -12,7 +11,7 @@ function Protected({ children }) {
       return setAdmin(false); 
     }
     try {
-      const response = await fetch("http://localhost:8080/admin/profile", {
+      const response = await fetch(`${BASE_URL}/admin/profile`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
