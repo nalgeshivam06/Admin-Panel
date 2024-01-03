@@ -7,7 +7,7 @@ const Slider = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch(`${BASE_URL}/api/getImgCircle`)
+        fetch(`${BASE_URL}/api/getImgCircle?limit=${100}`)
             .then((response) => response.json())
             .then((data) => setApiData(data.result))
             .catch((error) => console.error('Error fetching data:', error));
@@ -28,12 +28,12 @@ const Slider = () => {
                     <h1 className='font-bold '>Slider section</h1>
                     <span className='text-purple-400 font-bold  mt-1 hover:cursor-pointer' onClick={() => navigate('/homePage/create-slider-section')}>Create New</span>
                 </div>
-                <div className='flex justify-between'>
+                <div className='gird grid-cols-3'>
 
                     {apiData && apiData.map((item) => (
-                        <div key={item._id} style={{ marginBottom: '20px', position: "relative" }}>
+                        <div key={item._id} style={{ marginBottom: '20px', position: "relative" }} className='col-span-3 border'>
                             <img src={item.imgSrc} alt="Product" style={{ maxWidth: '100%', width: "400px", height: "200px" }} />
-                            {item.circles.map((circle) => (
+                            {item.circles[0].circles.map((circle) => (
                                 <div
                                     key={circle._id}
                                     style={{
