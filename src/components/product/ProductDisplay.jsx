@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from '../../../config';
 
 const ProductDisplay = () => {
   const [productData, setProductData] = useState([]);
 
   useEffect(() => {
     const limit = 100; 
-    const apiUrl = `http://localhost:8080/api/products?limit=${limit}`;
+    const apiUrl = `${BASE_URL}/api/products?limit=${limit}`;
   
     fetch(apiUrl)
       .then((response) => response.json())
@@ -14,7 +15,7 @@ const ProductDisplay = () => {
   }, []);
 
   const handleDelete = (productId) => {
-    fetch(`http://localhost:8080/api/products/${productId}`, {
+    fetch(`${BASE_URL}/api/products/${productId}`, {
       method: 'DELETE',
     })
       .then((response) => response.json())
