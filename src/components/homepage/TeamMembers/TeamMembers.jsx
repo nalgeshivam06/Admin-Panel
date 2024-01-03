@@ -37,7 +37,7 @@ const TeamMembers = () => {
                             alt={`${member.name}'s Image`}
                             style={{ width: "50px", height: "50px", borderRadius: '50%' }}
                         />
-                        <h3>{member.name}</h3>
+                        <h3 className='font-bold'>{member.name}</h3>
                         <p>{member.role}</p>
                         <p>Icon: {member.icon}</p>
                         <button
