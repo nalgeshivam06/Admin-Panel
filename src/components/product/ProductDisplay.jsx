@@ -4,7 +4,10 @@ const ProductDisplay = () => {
   const [productData, setProductData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/products')
+    const limit = 100; 
+    const apiUrl = `http://localhost:8080/api/products?limit=${limit}`;
+  
+    fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => setProductData(data))
       .catch((error) => console.error('Error fetching data:', error));
@@ -21,7 +24,7 @@ const ProductDisplay = () => {
   return (
     <div className='mx-6 my-8'>
       <h2 className='py-6 font-bold text-center text-xl'>Product Information</h2>
-      <div className="flex gap-x-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {productData && productData.map((product) => (
           <div key={product._id} style={{ marginBottom: '30px' }} className='p-2 border rounded'>
             <img key={product._id} src={product.images[0]} alt={`Product Image`} className='mb-6 w-[150px]' />
@@ -39,6 +42,8 @@ const ProductDisplay = () => {
             <p><b>Units Available:</b> {product.units}</p>
             <p><b>Price per Unit:</b> ${product.perUnitPrice}</p>
             <p><b>Total Price: </b>${product.totalPrice}</p>
+            <p><b>purchaseMode:</b> {product.purchaseMode.join(', ')}</p>
+            <p><b>productDescription:</b> {product.productDescription}</p>
             <p><b>Popularity:</b> {product.popularity}</p>
 
             <h4 className='font-bold'>Ratings:</h4>

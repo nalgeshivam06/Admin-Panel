@@ -1,6 +1,5 @@
-import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
   Button,
@@ -69,6 +68,7 @@ function ProductForm() {
     control,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   // -------------------------------------------------
 
@@ -261,6 +261,7 @@ function ProductForm() {
           });
           const responseData = await response.json();
           window.alert(responseData.message)
+          navigate('/admin');
         } catch (error) {
           console.error('Error uploading images:', error);
         }
