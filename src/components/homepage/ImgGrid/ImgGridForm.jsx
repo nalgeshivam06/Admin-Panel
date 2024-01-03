@@ -5,18 +5,33 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../../../config';
 
 function ImgGridForm() {
-    const { handleSubmit, control } = useForm();
+    const { handleSubmit, control, register } = useForm();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         try {
-            console.log(data);
+            const formData = new FormData();
+            // category
+            formData.append(`category`, data.category);
+
+            data.circles.forEach((circle, index) => {
+                formData.append(`circles[${index}].productTitle`, circle.productTitle);
+                formData.append(`circles[${index}].productCategory`, circle.productCategory);
+                formData.append(`circles[${index}].productPrice`, Number(circle.productPrice));
+                formData.append(`circles[${index}].topPosition`, Number(circle.topPosition));
+                formData.append(`circles[${index}].leftPosition`, Number(circle.leftPosition));
+                formData.append(`circles[${index}].productLink`, circle.productLink);
+            });
+            // image
+            const fileInput = document.getElementById(`image`);
+            const file = fileInput?.files[0];
+            formData.append(`image`, file);
+            
             const response = await fetch(`${BASE_URL}/api/gridImg`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: formData,
             });
 
             const responseData = await response.json();
@@ -33,21 +48,25 @@ function ImgGridForm() {
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-6 border rounded-md shadow-md mt-10">
                 <div className="mt-6">
 
-                    <label htmlFor={`imgSrc`} className="block text-sm font-medium leading-5 text-gray-700 mt-4">
+                    <label
+                        htmlFor="image"
+                        className="block text-sm font-medium leading-6 text-gray-900 font-bold"
+                    >
                         Image Source
                     </label>
-                    <Controller
-                        name={`imgSrc`}
-                        control={control}
-                        defaultValue={[]}
-                        render={({ field }) => (
+                    <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                             <input
-                                {...field}
-                                type="text"
-                                className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                                type="file"
+                                {...register('image', {
+                                    required: 'name is required',
+                                })}
+                                id="image"
+                                className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                accept="image/*"
                             />
-                        )}
-                    />
+                        </div>
+                    </div>
 
                     <label htmlFor={`category`} className="block text-sm font-medium leading-5 text-gray-700 mt-4">
                         Category
@@ -69,7 +88,14 @@ function ImgGridForm() {
                     <Controller
                         name={`circles`}
                         control={control}
-                        defaultValue={[]}
+                        defaultValue={[{
+                            productTitle: '',
+                            productCategory: '',
+                            productPrice: 0,
+                            topPosition: 0,
+                            leftPosition: 0,
+                            productLink: '',
+                        }]}
                         render={({ field }) => (
                             <div>
                                 {field.value.map((circle, index) => (
@@ -175,7 +201,22 @@ function ImgGridForm() {
                                         />
                                     </div>
                                 ))}
-                                <button type="button" onClick={() => field.onChange([...field.value, {}])} className="text-indigo-600 hover:text-indigo-900 mt-4">
+                                <button type="button"
+                                    onClick={() => {
+                                        const newCircles = [
+                                            ...field.value,
+                                            {
+                                                productTitle: '',
+                                                productCategory: '',
+                                                productPrice: 0,
+                                                topPosition: 0,
+                                                leftPosition: 0,
+                                                productLink: '',
+                                            },
+                                        ];
+                                        field.onChange(newCircles);
+                                    }}
+                                    className="text-indigo-600 hover:text-indigo-900 mt-4">
                                     Add Circle
                                 </button>
                             </div>

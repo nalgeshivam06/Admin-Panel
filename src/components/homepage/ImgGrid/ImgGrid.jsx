@@ -32,7 +32,7 @@ const ImgGrid = () => {
                 {
                     gridImgData && gridImgData.map((gridImg, index) => (
                         <div>
-                            <img class="h-auto max-w-full rounded-lg" src={gridImg.img} alt={gridImg.category} />
+                            <img class="h-auto max-w-full rounded-lg" src={gridImg.imgSrc} alt={gridImg.category} />
                             <div className='mb-2'><b>Category: </b>{gridImg.category}</div>
                             <button
                                 type="button"
