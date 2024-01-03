@@ -57,7 +57,11 @@ function MapDetails() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium leading-5 text-gray-700">Thumbnail:</label>
+<<<<<<< HEAD
                             <img src={map.thumbnail ? map.thumbnail : map.images[0]} alt="Thumbnail" className="mt-1 w-full h-32 object-cover" />
+=======
+                            <img src={map.thumbnail} alt="Thumbnail" className="mt-1 w-full h-32 object-cover" />
+>>>>>>> refs/remotes/origin/main
                         </div>
                         <div colSpan="2">
                             <label className="block text-sm font-medium leading-5 text-gray-700">Images:</label>
