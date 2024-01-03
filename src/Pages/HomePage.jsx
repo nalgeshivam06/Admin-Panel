@@ -6,6 +6,7 @@ import HeaderInfoSection from '../components/homepage/HeaderInfoSection/HeaderIn
 import ImagesSection from '../components/homepage/ImagesSection/ImagesSection'
 import TeamMembers from '../components/homepage/TeamMembers/TeamMembers'
 import ImgGrid from '../components/homepage/ImgGrid/ImgGrid'
+import MapDetails from '../components/homepage/MapSection/MapDetails'
 
 const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ const HomePage = () => {
         <ImagesSection/>
         <TeamMembers/>
         <ImgGrid/>
+        <MapDetails/>
     </div>
   )
 }
