@@ -5,47 +5,59 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../../../config';
 
 function ImageSectionForm() {
-    const { handleSubmit, control } = useForm();
+    const { handleSubmit, control, register } = useForm();
     const navigate = useNavigate()
 
     const onSubmit = async (data) => {
-        console.log(data);
+
+        const formData = new FormData();
+
         try {
-          const response = await fetch(`${BASE_URL}/api/createImgSection`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-        const res = await response.json();
-        window.alert(res.message)
-        navigate('/homePage')
+            // image
+            const fileInput = document.getElementById(`image`);
+            const file = fileInput?.files[0];
+            formData.append(`image`, file);
+
+            formData.append(`text`, data.text);
+
+            const response = await fetch(`${BASE_URL}/api/createImgSection`, {
+                method: "POST",
+                headers: {
+                },
+                body: formData
+            })
+            const res = await response.json();
+            window.alert(res.message)
+            navigate('/homePage')
         } catch (error) {
-          console.log("error saving image section", error)
+            console.log("error saving image section", error)
         }
-      };
+    };
 
     return (
         <>
             <AdminNavbar />
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-6 border rounded-md shadow-md mt-10">
                 <div className="mt-6">
-                    <label htmlFor={`img`} className="block text-sm font-medium leading-5 text-gray-700">
-                        Image URL
+                    <label
+                        htmlFor="image"
+                        className="block text-sm font-medium leading-6 text-gray-900 font-bold"
+                    >
+                        Image Source
                     </label>
-                    <Controller
-                        name={`img`}
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
+                    <div className="mt-2">
+                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 ">
                             <input
-                                {...field}
-                                type="text"
-                                className="mt-1 p-2 border block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                                type="file"
+                                {...register('image', {
+                                    required: 'name is required',
+                                })}
+                                id="image"
+                                className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                                accept="image/*"
                             />
-                        )}
-                    />
+                        </div>
+                    </div>
 
                     <label htmlFor={`text`} className="block text-sm font-medium leading-5 text-gray-700 mt-4">
                         Image Text
