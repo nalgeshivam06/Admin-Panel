@@ -21,6 +21,7 @@ const Slider = () => {
             .then((data) => setApiData(data.result))
             .catch((error) => console.error('Error deleting data:', error));
     };
+    console.log("slider: ", apiData);
     return (
         <>
             <div className='mt-6 mx-4'>
@@ -33,7 +34,7 @@ const Slider = () => {
                     {apiData && apiData.map((item) => (
                         <div key={item._id} style={{ marginBottom: '20px', position: "relative" }} className='col-span-3 border'>
                             <img src={item.imgSrc} alt="Product" style={{ maxWidth: '100%', width: "400px", height: "200px" }} />
-                            {item.circles[0].circles.map((circle) => (
+                            {item.circles && item.circles[0] && item.circles[0].circles && item.circles[0].circles.map((circle) => (
                                 <div
                                     key={circle._id}
                                     style={{
@@ -50,17 +51,20 @@ const Slider = () => {
                                     <p>{circle.productTitle}</p>
                                     <p>{circle.productCategory}</p>
                                     <p>${circle.price?.toFixed(2)}</p>
-                                    <button
+                                   
+                                </div>
+                            ))}
+                             <button
                                         type="button"
                                         className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1"
                                         onClick={() => handleDelete(item._id)}
                                     >
                                         Delete
                                     </button>
-                                </div>
-                            ))}
                         </div>
+                        
                     ))}
+                    
                 </div>
             </div>
         </>
