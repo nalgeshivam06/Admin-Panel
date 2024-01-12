@@ -34,7 +34,7 @@ function MapDetails() {
             </div>
             {
                 mapData && mapData.map((map, index) => (
-                    <div className="grid grid-cols-4 gap-4 my-4 border p-3">
+                    <div className="grid grid-cols-4 gap-4 my-4 border p-3" key={index}>
                         <div>
                             <label className="block text-sm font-medium leading-5 text-gray-700">Name:</label>
                             <p className="mt-1 text-sm leading-5 text-gray-900">{map.name}</p>

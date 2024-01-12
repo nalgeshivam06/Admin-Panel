@@ -28,11 +28,11 @@ const ImgGrid = () => {
                 <h1 className='font-bold '>Image Grid</h1>
                 <span className='text-green-400 font-bold  mt-1 hover:cursor-pointer' onClick={() => navigate('/homePage/create-imgGrid-section')}>Create New</span>
             </div>
-            <div class="grid grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
                 {
                     gridImgData && gridImgData.map((gridImg, index) => (
-                        <div>
-                            <img class="h-auto max-w-full rounded-lg" src={gridImg.imgSrc} alt={gridImg.category} />
+                        <div key={index}>
+                            <img className="h-auto max-w-full rounded-lg" src={gridImg.imgSrc} alt={gridImg.category} />
                             <div className='mb-2'><b>Category: </b>{gridImg.category}</div>
                             <button
                                 type="button"

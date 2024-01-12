@@ -13,6 +13,7 @@ import TeamMembersForm from './components/homepage/TeamMembers/TeamMembersForm';
 import SliderForm from './components/homepage/Slider/SliderForm';
 import ImgGridForm from './components/homepage/ImgGrid/ImgGridForm';
 import MapForm from './components/homepage/MapSection/MapForm';
+import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
 
 export default function App() {
 
@@ -93,6 +94,12 @@ export default function App() {
         <Route exact path='/homePage/create-map-section' element={
           <Protected>
             <MapForm />
+          </Protected>
+        }></Route>
+
+        <Route exact path='/homePage/create-category-description' element={
+          <Protected>
+            <CatDesciptionForm />
           </Protected>
         }></Route>
 
