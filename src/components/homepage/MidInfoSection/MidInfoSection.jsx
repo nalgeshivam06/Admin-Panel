@@ -13,10 +13,6 @@ const MidInfoSection = () => {
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
-    if (!apiData || apiData.length === 0 || !apiData[0]) {
-        return <p>No midinfo section available</p>;
-    }
-
 
     const handleDelete = (midInfoId) => {
         fetch(`${BASE_URL}/api/deleteMidSection/${midInfoId}`, {
