@@ -14,6 +14,7 @@ import SliderForm from './components/homepage/Slider/SliderForm';
 import ImgGridForm from './components/homepage/ImgGrid/ImgGridForm';
 import MapForm from './components/homepage/MapSection/MapForm';
 import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
+import ImagechangerForm from './components/homepage/imgChanger/ImagechangerForm';
 
 export default function App() {
 
@@ -100,6 +101,12 @@ export default function App() {
         <Route exact path='/homePage/create-category-description' element={
           <Protected>
             <CatDesciptionForm />
+          </Protected>
+        }></Route>
+
+        <Route exact path='/homePage/create-image-changer' element={
+          <Protected>
+            <ImagechangerForm />
           </Protected>
         }></Route>
 

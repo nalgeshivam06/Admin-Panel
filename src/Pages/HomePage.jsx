@@ -8,8 +8,8 @@ import TeamMembers from '../components/homepage/TeamMembers/TeamMembers'
 import ImgGrid from '../components/homepage/ImgGrid/ImgGrid'
 import MapDetails from '../components/homepage/MapSection/MapDetails'
 import CatDescription from '../components/homepage/catDescription/catDescription'
-import Imagechanger from '../components/homepage/imgChanger/Imagechanger'
 import Review from '../components/homepage/review/Review'
+import ImageChanger from '../components/homepage/imgChanger/Imagechanger'
 
 const HomePage = () => {
   return (
@@ -23,7 +23,7 @@ const HomePage = () => {
         <ImgGrid/>
         <MapDetails/>
         <CatDescription/>
-        <Imagechanger/>
+        <ImageChanger/>
         <Review/>
     </div>
   )
