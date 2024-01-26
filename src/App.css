@@ -3,3 +3,14 @@
   margin: 0;
   box-sizing: border-box;
 }
+.homepagelinks h4{
+  margin:.5rem 0 !important;
+  padding: .5rem 0;
+  cursor: pointer;
+}
+.homepagelinks h4:nth-child(even){
+  background: rgb(255, 146, 146);
+}
+.homepagelinks h4:nth-child(odd){
+  background: rgb(146, 255, 172);
+}
