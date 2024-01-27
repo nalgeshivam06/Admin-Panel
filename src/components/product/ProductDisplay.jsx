@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../../config';
+import Navbar from '../Navbar';
 
 const ProductDisplay = () => {
   const [productData, setProductData] = useState([]);
@@ -23,8 +24,15 @@ const ProductDisplay = () => {
       .catch((error) => console.error('Error deleting data:', error));
   };
   return (
-    <div className='mx-6 my-8'>
-      <h2 className='py-6 font-bold text-center text-xl'>Product Information</h2>
+    <>
+    <div className='flex'>
+     <div className='flex-grow w-1/5 p-2'>
+     <Navbar/>
+     </div>
+     <div className='flex-grow w-4/5 border-l-2 border-gray-300'>
+     <div className='mx-6 mb-8'>
+     <h2 className='pl-4 pt-4 font-bold text-2xl'>Welcome to AYATRIO</h2>
+      <h2 className='pb-6 pt-1 font-bold text-center text-xl'>Product Information</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {productData && productData.map((product) => (
           <div key={product._id} style={{ marginBottom: '30px' }} className='p-2 border rounded'>
@@ -73,6 +81,10 @@ const ProductDisplay = () => {
         ))}
       </div>
     </div>
+     </div>
+    </div>
+    
+    </>
   );
 };
 
