@@ -49,141 +49,141 @@ export default function App() {
         <Route path="*" element={<div>Page not found</div>}></Route>
         <Route exact path="/" element={<LoginPage />}></Route>
         <Route exact path="/admin" element={
-          // <Protected>
+          <Protected>
             <AdminPanel currentWidth={width} />
-          // </Protected>
+           </Protected>
         }>
         </Route>
         <Route exact path="/create-product" element={
-          // <Protected>
+          <Protected>
             <AdminProductFormPage />
-          // </Protected>
+          </Protected>
         }>
         </Route>
         <Route exact path="/homePage" element={
-          // <Protected>
+          <Protected>
             <HomePageLinks currentWidth={width} />
-          // </Protected>
+          </Protected>
         }>
         </Route>
 
         {/* --------- 🧨🧨🧨 home page ---------- 🧨🧨🧨 */}
 
         <Route exact path='/update-home-page/slider-section' element={
-          // <Protected>
+          <Protected>
             <Slider />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/mid-info-section-(image-changer)' element={
-          // <Protected>
+          <Protected>
             <MidInfoSection />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/header-info-section' element={
-          // <Protected>
+          <Protected>
             <HeaderInfoSection />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/image-section' element={
-          // <Protected>
+          <Protected>
             <ImagesSection />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/team-memebers' element={
-          // <Protected>
+          <Protected>
             <TeamMembers />
-          // </Protected>
+         </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/image-grid' element={
-          // <Protected>
+          <Protected>
             <ImgGrid />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/map-detail' element={
-          // <Protected>
+          <Protected>
             <MapDetails />
-          // </Protected>
+         </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/category-description' element={
-          // <Protected>
+          <Protected>
             <CatDescription />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/image-changer-(multiple-images)' element={
-          // <Protected>
+          <Protected>
             <ImageChanger />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/update-home-page/reviews' element={
-          // <Protected>
+          <Protected>
             <Review />
-          // </Protected>
+          </Protected>
         }></Route>
 
 
         {/* ---------🎈🎈🎈🎈 Forms -------------- 🎈🎈🎈🎈 */}
 
         <Route exact path='/homePage/create-slider-section' element={
-          // <Protected>
+          <Protected>
             <SliderForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-mid-info-section' element={
-          // <Protected>
+          <Protected>
             <ImageChangerForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-header-info-section' element={
-          // <Protected>
+          <Protected>
             <HeaderInfoForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-image-section' element={
-          // <Protected>
+          <Protected>
             <ImageSectionForm />
-          // </Protected>
+           </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-team-members-section' element={
-          // <Protected>
+          <Protected>
             <TeamMembersForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-imgGrid-section' element={
-          // <Protected>
+          <Protected>
             <ImgGridForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-map-section' element={
-          // <Protected>
+          <Protected>
             <MapForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-category-description' element={
-          // <Protected>
+          <Protected>
             <CatDesciptionForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
         <Route exact path='/homePage/create-image-changer' element={
-          // <Protected>
+          <Protected>
             <ImagechangerForm />
-          // </Protected>
+          </Protected>
         }></Route>
 
 
