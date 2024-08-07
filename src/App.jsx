@@ -13,7 +13,7 @@ import TeamMembersForm from './components/homepage/TeamMembers/TeamMembersForm';
 import SliderForm from './components/homepage/Slider/SliderForm';
 import ImgGridForm from './components/homepage/ImgGrid/ImgGridForm';
 import MapForm from './components/homepage/MapSection/MapForm';
-import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
+// import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
 
 import ImagechangerForm from './components/homepage/imgChanger/ImagechangerForm';
 import HomePageLinks from './components/HomePageLinks';
@@ -35,6 +35,7 @@ import InStoreOrder from './components/dashboard/InStoreOrder';
 import FreeSampling from './components/dashboard/FreeSampling';
 import FreeDesign from './components/dashboard/FreeDesign';
 import BuyNow from './components/dashboard/BuyNow';
+import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
 
 
 
@@ -187,7 +188,8 @@ export default function App() {
 
         <Route exact path='/homePage/create-category-description' element={
          // <Protected>
-            <CatDesciptionForm />
+            // <CatDesciptionForm />
+            <CatDesciptionForm/>
           //</Protected>
         }></Route>
 
