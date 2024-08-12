@@ -48,4 +48,4 @@ const CatDescription = () => {
     )
 }
 
-export default CatDescription
+export default CatDescription;

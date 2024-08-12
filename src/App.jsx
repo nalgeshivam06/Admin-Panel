@@ -14,6 +14,8 @@ import SliderForm from './components/homepage/Slider/SliderForm';
 import ImgGridForm from './components/homepage/ImgGrid/ImgGridForm';
 import MapForm from './components/homepage/MapSection/MapForm';
 // import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
+// import CatDescription from './components/homepage/catDescription/CatDescription';
+import CatDescriptionForm from './components/homepage/catDescription/CatDescriptionForm'
 
 import ImagechangerForm from './components/homepage/imgChanger/ImagechangerForm';
 import HomePageLinks from './components/HomePageLinks';
@@ -24,7 +26,7 @@ import ImagesSection from './components/homepage/ImagesSection/ImagesSection';
 import TeamMembers from './components/homepage/TeamMembers/TeamMembers';
 import ImgGrid from './components/homepage/ImgGrid/ImgGrid';
 import MapDetails from './components/homepage/MapSection/MapDetails';
-import CatDescription from './components/homepage/catDescription/catDescription';
+// import CatDescription from './components/homepage/catDescription/catDescription';
 import ImageChanger from './components/homepage/imgChanger/Imagechanger';
 import Review from './components/homepage/review/Review';
 
@@ -35,7 +37,8 @@ import InStoreOrder from './components/dashboard/InStoreOrder';
 import FreeSampling from './components/dashboard/FreeSampling';
 import FreeDesign from './components/dashboard/FreeDesign';
 import BuyNow from './components/dashboard/BuyNow';
-import CatDesciptionForm from './components/homepage/catDescription/catDescriptionForm';
+import CatDescription from './components/homepage/catDescription/CatDescription';
+
 
 
 
@@ -125,7 +128,9 @@ export default function App() {
 
         <Route exact path='/update-home-page/category-description' element={
           //<Protected>
-            <CatDescription />
+            // <CatDescription />
+            <CatDescription/>
+            
          // </Protected>
         }></Route>
 
@@ -188,8 +193,7 @@ export default function App() {
 
         <Route exact path='/homePage/create-category-description' element={
          // <Protected>
-            // <CatDesciptionForm />
-            <CatDesciptionForm/>
+            <CatDescriptionForm/>
           //</Protected>
         }></Route>
 

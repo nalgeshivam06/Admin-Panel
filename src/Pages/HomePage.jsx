@@ -7,9 +7,10 @@ import ImagesSection from '../components/homepage/ImagesSection/ImagesSection'
 import TeamMembers from '../components/homepage/TeamMembers/TeamMembers'
 import ImgGrid from '../components/homepage/ImgGrid/ImgGrid'
 import MapDetails from '../components/homepage/MapSection/MapDetails'
-import CatDescription from '../components/homepage/catDescription/catDescription'
+// import CatDescription from '../components/homepage/catDescription/catDescription'
 import Review from '../components/homepage/review/Review'
 import ImageChanger from '../components/homepage/imgChanger/Imagechanger'
+import CatDescription from '../components/homepage/catDescription/CatDescription'
 
 const HomePage = () => {
   return (
@@ -22,6 +23,7 @@ const HomePage = () => {
         <TeamMembers/>
         <ImgGrid/>
         <MapDetails/>
+        {/* <CatDescription/> */}
         <CatDescription/>
         <ImageChanger/>
         <Review/>

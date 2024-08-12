@@ -4,7 +4,7 @@ import AdminNavbar from '../../AdminNavbar';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../../../config';
 
-function CatDesciptionForm() {
+function CatDescriptionForm() {
     const { handleSubmit, control, register } = useForm();
     const navigate = useNavigate();
 
@@ -387,4 +387,4 @@ function CatDesciptionForm() {
     );
 }
 
-export default CatDesciptionForm;
+export default CatDescriptionForm;
