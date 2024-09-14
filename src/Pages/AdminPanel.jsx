@@ -1,13 +1,13 @@
-import React from 'react'
-// import AdminProductList from '../components/AdminProductList'
+import React from 'react' 
 import ProductDisplay from '../components/product/ProductDisplay'
-import Dashboard from '../components/dashboard/Dashboard'
+import Dashboard from '../components/dashboard/DashBoard.jsx'
 
 
 const AdminPanel = ({ currentWidth }) => {
   return (
     <div>
       {/* <ProductDisplay/> */}
+      
       <Dashboard/>
     
     </div>
