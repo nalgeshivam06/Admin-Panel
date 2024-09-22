@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <div className="mt-4">
-      <h1 className="text-3xl font-semibold pb-4 pl-3">AYATRIO</h1>
+      <h1 className="text-3xl font-semibold pb-4 pl-3">SHIVAM</h1>
       <ul>
         <li className="pl-3 pt-1.5 pb-1.5 text-lg hover:bg-gray-200 rounded-full ">
         <img className='inline-block ml-4' src="/Images/dashboard.png" alt="dash" width={20} height={20}/>
